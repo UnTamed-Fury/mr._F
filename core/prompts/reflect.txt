@@ -1,0 +1,48 @@
+You are reflecting on an evolution run outcome.
+
+## Run Result
+
+**Score before:** {before}
+**Score after:** {after}
+**Outcome:** {outcome}
+
+## Change Made
+
+```diff
+{diff}
+```
+
+## Error (if any)
+
+{error}
+
+## Reflection Questions
+
+1. **What caused this outcome?**
+   - Why did it succeed/fail?
+   - What was the key factor?
+
+2. **What exact change mattered?**
+   - Which specific modification had impact?
+   - Was it positive or negative?
+
+3. **What should be tried next?**
+   - Based on this result, what's the next best approach?
+   - What should be avoided?
+
+## Output Format
+
+Return a JSON object:
+
+```json
+{{
+  "result": "success|failure",
+  "reason": "specific explanation of what happened",
+  "key_insight": "the one thing that mattered most",
+  "next_strategy": "concrete suggestion for next iteration",
+  "patterns_to_repeat": ["what worked well"],
+  "patterns_to_avoid": ["what didn't work"]
+}}
+```
+
+Be concise and specific. Focus on actionable insights.

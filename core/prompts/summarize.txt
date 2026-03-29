@@ -1,0 +1,63 @@
+You are summarizing evolution runs for long-term memory.
+
+## Input: Journal Entries
+
+{journal_chunk}
+
+## Task
+
+Extract patterns and insights from these runs.
+
+## Focus Areas
+
+### 1. Recurring Successful Patterns
+- What changes consistently improved score?
+- What strategies worked well?
+- What approaches should be repeated?
+
+### 2. Recurring Failures
+- What changes consistently failed?
+- What mistakes keep happening?
+- What should be avoided?
+
+### 3. Optimization Strategies
+- What techniques improved performance?
+- What simplifications helped?
+- What trade-offs were discovered?
+
+## Output Format
+
+Return a JSON array:
+
+```json
+[
+  {
+    "range": "runs {start}-{end}",
+    "successful_patterns": [
+      "pattern 1",
+      "pattern 2"
+    ],
+    "failures_to_avoid": [
+      "failure 1",
+      "failure 2"
+    ],
+    "optimization_strategies": [
+      "strategy 1",
+      "strategy 2"
+    ],
+    "key_insights": [
+      "insight 1",
+      "insight 2"
+    ]
+  }
+]
+```
+
+## Guidelines
+
+- Be **concise** - bullet points only
+- Be **specific** - no vague statements
+- Be **actionable** - useful for future runs
+- Limit to **5 items** per category
+
+Focus on patterns that will help the next improvement attempt.

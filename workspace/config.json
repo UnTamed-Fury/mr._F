@@ -1,0 +1,13 @@
+{
+  "goal": "Optimize fibonacci() for speed (currently O(2^n) recursive)",
+  "max_iterations": 1,
+  "mutation_style": "minimal",
+  "allow_refactor": false,
+  "model": "openrouter/free",
+  "temperature": 0.7,
+  "max_lines_changed": 50,
+  "timeout_seconds": 5,
+  "max_file_size_multiplier": 2.0,
+  "acceptance_threshold": 0.0,
+  "summarize_every_n_runs": 10
+}

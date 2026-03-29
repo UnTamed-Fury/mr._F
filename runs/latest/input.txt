@@ -1,0 +1,16 @@
+You are improving a Python codebase.
+
+## Context
+
+- **Goal:** Optimize fibonacci() for speed (currently O(2^n) recursive)
+- **Current score:** 0.9998
+- **Best score so far:** 1.0000
+
+## CRITICAL Constraints (MUST FOLLOW - VIOLATION = REJECTION)
+
+- Make **minimal changes** (≤50 lines changed in diff)
+- Do **NOT** rewrite entire file
+- Do **NOT** delete docstrings or comments
+- Keep function signatures **unchanged**
+- Do **NOT** introduce new dependencies
+- Focus on **one specific improvement** at

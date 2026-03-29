@@ -1,0 +1,12 @@
+{
+  "max_lines_changed": 50,
+  "max_file_size_multiplier": 2.0,
+  "timeout_seconds": 5,
+  "max_candidates_per_run": 3,
+  "max_journal_entries": 1000,
+  "max_reflections_entries": 500,
+  "max_summaries_entries": 50,
+  "max_changelog_lines": 1000,
+  "summarize_trigger_count": 100,
+  "journal_keep_last": 50
+}

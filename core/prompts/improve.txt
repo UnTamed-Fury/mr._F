@@ -1,0 +1,58 @@
+You are improving a Python codebase.
+
+## Context
+
+- **Goal:** {goal}
+- **Current score:** {score}
+- **Best score so far:** {best_score}
+
+## CRITICAL Constraints (MUST FOLLOW - VIOLATION = REJECTION)
+
+- Make **minimal changes** (≤50 lines changed in diff)
+- Do **NOT** rewrite entire file
+- Do **NOT** delete docstrings or comments
+- Keep function signatures **unchanged**
+- Do **NOT** introduce new dependencies
+- Focus on **one specific improvement** at a time
+- **Preserve existing structure** - only modify internal logic
+
+## Memory Context
+
+### Learned Insights
+{summaries}
+
+### Failures to Avoid
+{failures}
+
+### Recent Reflections
+{reflections}
+
+## Current Code
+
+```python
+{current_code}
+```
+
+## Task
+
+Improve the code slightly to increase score.
+
+Consider (pick ONE):
+1. **Correctness** - Fix any logic bugs (small fix)
+2. **Performance** - Optimize one slow operation
+3. **Simplicity** - Reduce complexity in one place
+
+## Output Format
+
+Return **ONLY** the updated code. No explanations.
+
+The code must:
+- Be complete (not partial snippets)
+- Be valid Python
+- Preserve all existing functionality
+- Keep all docstrings and comments
+- Change ≤20 lines total
+
+```python
+# Your improved code here (full file)
+```

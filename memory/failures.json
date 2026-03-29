@@ -1,0 +1,8 @@
+{
+  "syntax_error": 2,
+  "timeout": 0,
+  "wrong_output": 0,
+  "regression": 0,
+  "runtime_error": 2,
+  "line_limit_exceeded": 0
+}
