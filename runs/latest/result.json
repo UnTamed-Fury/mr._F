@@ -1,9 +1,9 @@
 {
   "status": "rejected",
-  "score": 0.8990332524475966,
-  "score_before": 0.9439555593259986,
-  "score_delta": -0.04492230687840204,
-  "runtime": 0.00011682510375976562,
+  "score": 0.8988653369102909,
+  "score_before": 0.9434609678353453,
+  "score_delta": -0.044595630925054364,
+  "runtime": 0.0001609325408935547,
   "lines_changed": 0,
   "errors": null
 }
