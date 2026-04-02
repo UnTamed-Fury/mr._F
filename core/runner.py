@@ -253,15 +253,57 @@ class EvolutionRunner:
         """Build reflection context for the agent."""
         if not memory.get('reflections'):
             return "No recent reflections."
-        
+
         context = []
         for r in memory['reflections'][-5:]:
             result = r.get('result', 'unknown')
             reason = r.get('reason', '')[:100]
             context.append(f"- {result}: {reason}")
-        
+
         return '\n'.join(context)
-    
+
+    def _run_critic(self, original_code, new_code):
+        """Run critic analysis on proposed change."""
+        try:
+            # Generate diff
+            diff_text = self._generate_diff(original_code, new_code)
+            
+            # Load critic prompt
+            critic_prompt = self._load_prompt('critic')
+            critic_prompt = critic_prompt.format(
+                original_code=original_code[:2000],  # Truncate for context
+                new_code=new_code[:2000],
+                diff=diff_text[:1000]
+            )
+            
+            # Call LLM for critic analysis
+            critic_response = self._call_llm(critic_prompt)
+            
+            # Parse JSON response
+            if critic_response:
+                # Try to extract JSON from response
+                import re
+                json_match = re.search(r'\{[^}]+\}', critic_response, re.DOTALL)
+                if json_match:
+                    return json.loads(json_match.group())
+            
+            # Default if parsing fails
+            return {
+                'risk_level': 'medium',
+                'issues': ['Could not parse critic response'],
+                'recommendation': 'accept',
+                'reasoning': 'Default acceptance due to parsing failure'
+            }
+            
+        except Exception as e:
+            print(f"[Mr. F] Critic analysis failed: {e}")
+            return {
+                'risk_level': 'medium',
+                'issues': [f'Critic error: {str(e)}'],
+                'recommendation': 'accept',
+                'reasoning': 'Default acceptance due to error'
+            }
+
     def _get_current_code(self):
         """Get current target.py code."""
         target_path = os.path.join(self.workspace_path, 'target.py')
@@ -668,11 +710,23 @@ class EvolutionRunner:
         if new_code is None:
             print("[Mr. F] LLM call failed, keeping current code")
             new_code = current_code
+
+        # CRITIC STEP: Analyze proposed change
+        print("[Mr. F] Running critic analysis...")
+        critic_result = self._run_critic(current_code, new_code)
         
+        if critic_result.get('recommendation') == 'reject':
+            print(f"[Mr. F] REJECTED by critic: {critic_result.get('reasoning', 'Unknown')}")
+            print(f"[Mr. F] Issues: {critic_result.get('issues', [])}")
+            new_code = current_code  # Revert to original
+        elif critic_result.get('risk_level') == 'high':
+            print(f"[Mr. F] ⚠️ High risk change: {critic_result.get('reasoning', 'Unknown')}")
+            # Continue but log the risk
+
         # Generate diff
         diff_text = self._generate_diff(current_code, new_code)
         lines_changed = count_lines_changed(diff_text)
-        
+
         print(f"[Mr. F] Proposed changes: {lines_changed} lines")
 
         # Validate - Dynamic line limit based on codebase size

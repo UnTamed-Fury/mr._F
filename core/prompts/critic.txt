@@ -24,41 +24,67 @@ Analyze the following change for risks and issues.
 
 ## Check For
 
-1. **Logic Breaks**
-   - Does it change expected behavior?
-   - Are edge cases handled?
-   - Are there off-by-one errors?
+### 1. Logic Breaks
 
-2. **Risk Assessment**
-   - Is the change minimal?
-   - Does it touch critical paths?
-   - Could it cause regressions?
+- [ ] Does it change expected behavior?
+- [ ] Are edge cases handled?
+- [ ] Are there off-by-one errors?
+- [ ] Are there null/None issues?
 
-3. **Constraint Violations**
-   - Lines changed > 20?
-   - Function signatures modified?
-   - New dependencies added?
-   - File size increased > 2x?
+### 2. Risk Assessment
 
-4. **Quality Issues**
-   - Introduced complexity?
-   - Reduced readability?
-   - Potential performance issues?
+- [ ] Is the change minimal?
+- [ ] Does it touch critical paths?
+- [ ] Could it cause regressions?
+- [ ] Is error handling adequate?
+
+### 3. Constraint Violations
+
+- [ ] Lines changed > 50?
+- [ ] Function signatures modified?
+- [ ] New dependencies added?
+- [ ] File size increased > 2x?
+- [ ] Docstrings deleted?
+- [ ] Comments deleted?
+
+### 4. Quality Issues
+
+- [ ] Introduced complexity?
+- [ ] Reduced readability?
+- [ ] Potential performance issues?
+- [ ] Magic numbers added?
+- [ ] Hardcoded values?
 
 ## Output Format
 
 Return a JSON object:
 
 ```json
-{
+{{
   "risk_level": "low|medium|high",
   "issues": [
     "specific issue 1",
     "specific issue 2"
   ],
   "recommendation": "accept|reject|modify",
-  "reasoning": "brief explanation"
-}
+  "reasoning": "brief explanation",
+  "lines_changed": 0,
+  "constraints_violated": [],
+  "quality_score": 0.0
+}}
 ```
 
-Be strict. Better to reject a risky change than accept a regression.
+## Scoring
+
+- **risk_level:** low (safe), medium (caution), high (dangerous)
+- **quality_score:** 0.0-1.0 (1.0 = perfect)
+- **recommendation:** 
+  - accept (no issues)
+  - reject (critical issues)
+  - modify (minor issues)
+
+## Be Strict
+
+Better to reject a risky change than accept a regression.
+
+**Safety > Improvement**
