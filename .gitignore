@@ -1,0 +1,85 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Mr. F specific - DO NOT COMMIT
+# These are generated at runtime and should not be tracked
+memory/journal.jsonl
+memory/reflections.jsonl
+memory/summaries.json
+memory/failures.json
+memory/best.json
+memory/iteration_state.json
+memory/self_assessments.jsonl
+runs/latest/*
+runs/archive/*
+runs/trace/*
+meta/compression_state.json
+workspace/__pycache__/
+core/__pycache__/
+
+# Keep these (they are initialized empty but tracked)
+!memory/journal.jsonl
+!memory/reflections.jsonl
+!memory/summaries.json
+!memory/failures.json
+!memory/best.json
+
+# Secrets - NEVER COMMIT
+*.pem
+*.key
+secrets/
+credentials/
