@@ -113,14 +113,15 @@ class SessionJournal:
         with open(self.journal_path, 'r') as f:
             content = f.read()
 
-        # Find position after "---" (after header)
-        separator = content.find("\n---\n")
-        if separator == -1:
+        # Find the last "---" in the content (end of last entry)
+        # We want to append AFTER all existing entries
+        last_separator = content.rfind("\n---\n")
+        if last_separator == -1:
             # No separator found, append at end
             new_content = content + "\n" + entry
         else:
-            # Insert new entry after the separator (add newline after ---)
-            insert_pos = separator + 5  # After "\n---\n"
+            # Append after the last separator
+            insert_pos = last_separator + 5  # After "\n---\n"
             new_content = content[:insert_pos] + "\n" + entry
 
         # Write back
