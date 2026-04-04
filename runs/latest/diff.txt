@@ -1,21 +1,36 @@
 --- old/target.py
 +++ new/target.py
-@@ -38,7 +38,8 @@
-         return 0
-     if n == 1:
-         return 1
--    a, b = 0, 1
-+    a: int = 0
-+    b: int = 1
-     for _ in range(2, n + 1):
-         a, b = b, a + b
-     return b
-@@ -69,7 +70,7 @@
-     # Optimized to avoid redundant calculations
-     if count <= 0:
-         return []
--    result = [0, 1]
-+    result: List[int] = [0, 1]
-     for i in range(2, count):
-         result.append(result[-1] + result[-2])
-     return result[:count]
+@@ -13,14 +13,13 @@
+ 
+ def fibonacci(n: int) -> int:
+     """
+-    Calculate the nth fibonacci number.
++    Calculate the nth Fibonacci number.
+ 
+     Args:
+-        n: The position in fibonacci sequence (0-indexed). 
+-           For n <= 0, returns 0.
++        n: The position in the Fibonacci sequence (0-indexed). For n <= 0, returns 0.
+ 
+     Returns:
+-        The nth fibonacci number. For n=0 returns 0, n=1 returns 1.
++        The nth Fibonacci number. For n=0 returns 0, n=1 returns 1.
+ 
+     Examples:
+         >>> fibonacci(0)
+@@ -47,13 +46,13 @@
+ 
+ def fibonacci_sequence(count: int) -> List[int]:
+     """
+-    Generate first n fibonacci numbers.
++    Generate the first n Fibonacci numbers.
+ 
+     Args:
+         count: How many numbers to generate. If count <= 0, returns an empty list.
+ 
+     Returns:
+-        List of first count fibonacci numbers, starting with 0.
++        List of the first count Fibonacci numbers, starting with 0.
+         For count=1 returns [0]; for count=2 returns [0, 1].
+ 
+     Examples:

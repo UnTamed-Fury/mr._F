@@ -13,14 +13,14 @@ from typing import List
 
 def fibonacci(n: int) -> int:
     """
-    Calculate the nth fibonacci number.
+    Calculate the nth Fibonacci number.
 
     Args:
-        n: The position in fibonacci sequence (0-indexed). 
-           For n <= 0, returns 0.
+        n: The position in the Fibonacci sequence (0-indexed). For n <= 0, returns 0.
 
     Returns:
-        The nth fibonacci number. For n=0 returns 0, n=1 returns 1.
+        The nth Fibonacci number. For n=0 returns 0, n=1 returns 1.
 
     Examples:
-        >>> fibonacci(
+        >>> fibonacci(0)
+     
