@@ -8,8 +8,10 @@ Constraints:
 - Must use only standard library
 """
 
+from typing import List
 
-def fibonacci(n):
+
+def fibonacci(n: int) -> int:
     """
     Calculate the nth fibonacci number.
 
@@ -30,7 +32,7 @@ def fibonacci(n):
     return b
 
 
-def fibonacci_sequence(count):
+def fibonacci_sequence(count: int) -> List[int]:
     """
     Generate first n fibonacci numbers.
 

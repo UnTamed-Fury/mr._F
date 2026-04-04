@@ -1,5 +1,5 @@
 {
-  "goal": "Optimize fibonacci() for speed (currently O(2^n) recursive)",
+  "goal": "Add type hints and improve docstrings for better code quality score",
   "max_iterations": 3,
   "mutation_style": "precise",
   "allow_refactor": true,

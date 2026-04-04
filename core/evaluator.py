@@ -140,9 +140,17 @@ def evaluate(workspace_path=None, timeout=5.0, previous_score=None, claimed_impr
         result.safety_score = calculate_safety_score(test_pass_rate, elapsed, timeout)
         
         # TRUTH HIERARCHY LEVEL 4: Evaluator metrics
+        # Calculate preliminary score (sum of the other 4 weighted metrics)
+        preliminary_score = (
+            result.test_pass_rate * 0.40 +
+            result.speed_score * 0.20 +
+            result.code_quality_score * 0.15 +
+            result.safety_score * 0.15
+        ) / 0.90 # Normalize to 1.0 scale for comparison
+        
         result.improvement_score = calculate_improvement_score(
             previous_score,
-            result.total_score,
+            preliminary_score,
             claimed_improvement
         )
         
