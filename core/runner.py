@@ -355,7 +355,16 @@ class EvolutionRunner:
             models_to_try.append(fallback)
 
         for model_id in models_to_try:
+            # Slow mode: wait between calls to clear rate limits
+            if self.config.get('slow_mode', False) and hasattr(self, '_last_call_time'):
+                elapsed = time.time() - self._last_call_time
+                if elapsed < 30:
+                    wait_time = 30 - elapsed
+                    print(f"[Mr. F] Slow mode: Waiting {wait_time:.1f}s for rate limit bucket...")
+                    time.sleep(wait_time)
+
             print(f"[Mr. F] Calling LLM ({model_id})...")
+            self._last_call_time = time.time()
             
             payload = {
                 'model': model_id,
