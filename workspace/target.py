@@ -16,10 +16,22 @@ def fibonacci(n: int) -> int:
     Calculate the nth fibonacci number.
 
     Args:
-        n: The position in fibonacci sequence (0-indexed)
+        n: The position in fibonacci sequence (0-indexed). 
+           For n <= 0, returns 0.
 
     Returns:
-        The nth fibonacci number
+        The nth fibonacci number. For n=0 returns 0, n=1 returns 1.
+
+    Examples:
+        >>> fibonacci(0)
+        0
+        >>> fibonacci(1)
+        1
+        >>> fibonacci(5)
+        5
+
+    Time complexity: O(n)
+    Space complexity: O(1)
     """
     # Optimized iterative implementation
     if n <= 0:
@@ -37,10 +49,22 @@ def fibonacci_sequence(count: int) -> List[int]:
     Generate first n fibonacci numbers.
 
     Args:
-        count: How many numbers to generate
+        count: How many numbers to generate. If count <= 0, returns an empty list.
 
     Returns:
-        List of first n fibonacci numbers
+        List of first count fibonacci numbers, starting with 0.
+        For count=1 returns [0]; for count=2 returns [0, 1].
+
+    Examples:
+        >>> fibonacci_sequence(0)
+        []
+        >>> fibonacci_sequence(1)
+        [0]
+        >>> fibonacci_sequence(5)
+        [0, 1, 1, 2, 3]
+
+    Time complexity: O(n)
+    Space complexity: O(n)
     """
     # Optimized to avoid redundant calculations
     if count <= 0:

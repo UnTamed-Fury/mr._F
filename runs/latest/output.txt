@@ -8,21 +8,19 @@ Constraints:
 - Must use only standard library
 """
 
+from typing import List
 
-def fibonacci(n):
+
+def fibonacci(n: int) -> int:
     """
     Calculate the nth fibonacci number.
 
     Args:
-        n: The position in fibonacci sequence (0-indexed)
+        n: The position in fibonacci sequence (0-indexed). 
+           For n <= 0, returns 0.
 
     Returns:
-        The nth fibonacci number
-    """
-    # Optimized iterative implementation
-    if n <= 0:
-        return 0
-    if n == 1:
-        return 1
-    a, b = 0, 1
-    for _ in ran
+        The nth fibonacci number. For n=0 returns 0, n=1 returns 1.
+
+    Examples:
+        >>> fibonacci(
