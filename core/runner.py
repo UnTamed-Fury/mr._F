@@ -356,8 +356,8 @@ class EvolutionRunner:
         }
 
         # Retry logic for rate limits
-        max_retries = 3
-        retry_delay = 5
+        max_retries = 5
+        retry_delay = 10
         
         for attempt in range(max_retries):
             try:
@@ -731,16 +731,19 @@ class EvolutionRunner:
             new_code = current_code
 
         # CRITIC STEP: Analyze proposed change
-        print("[Mr. F] Running critic analysis...")
-        critic_result = self._run_critic(current_code, new_code)
-        
-        if critic_result.get('recommendation') == 'reject':
-            print(f"[Mr. F] REJECTED by critic: {critic_result.get('reasoning', 'Unknown')}")
-            print(f"[Mr. F] Issues: {critic_result.get('issues', [])}")
-            new_code = current_code  # Revert to original
-        elif critic_result.get('risk_level') == 'high':
-            print(f"[Mr. F] ⚠️ High risk change: {critic_result.get('reasoning', 'Unknown')}")
-            # Continue but log the risk
+        if self.config.get('use_critic', True):
+            print("[Mr. F] Running critic analysis...")
+            critic_result = self._run_critic(current_code, new_code)
+            
+            if critic_result.get('recommendation') == 'reject':
+                print(f"[Mr. F] REJECTED by critic: {critic_result.get('reasoning', 'Unknown')}")
+                print(f"[Mr. F] Issues: {critic_result.get('issues', [])}")
+                new_code = current_code  # Revert to original
+            elif critic_result.get('risk_level') == 'high':
+                print(f"[Mr. F] ⚠️ High risk change: {critic_result.get('reasoning', 'Unknown')}")
+                # Continue but log the risk
+        else:
+            print("[Mr. F] Skipping critic analysis (disabled in config)")
 
         # Generate diff
         diff_text = self._generate_diff(current_code, new_code)
@@ -892,33 +895,36 @@ class EvolutionRunner:
         self._append_to_journal(journal_entry)
         
         # Reflect
-        print("[Mr. F] Generating reflection...")
-        
-        reflect_prompt = self._load_prompt('reflect')
-        reflect_prompt = reflect_prompt.format(
-            before=f"{score_before:.4f}",
-            after=f"{score_after:.4f}",
-            outcome='accepted' if accepted else 'rejected',
-            diff=diff_text[:500],
-            error=new_result.error or 'None'
-        )
-        
-        reflection_text = self._call_llm(reflect_prompt)
-        
-        if reflection_text:
-            try:
-                if reflection_text.startswith('```json'):
-                    reflection_text = reflection_text[7:-3]
-                reflection = json.loads(reflection_text.strip())
-            except Exception:
-                reflection = {
-                    'result': 'success' if accepted else 'failure',
-                    'reason': reflection_text[:200],
-                    'next_strategy': 'Continue with similar improvements' if accepted else 'Try different approach'
-                }
+        if self.config.get('use_reflection', True):
+            print("[Mr. F] Generating reflection...")
             
-            reflection['timestamp'] = timestamp
-            self._append_reflection(reflection)
+            reflect_prompt = self._load_prompt('reflect')
+            reflect_prompt = reflect_prompt.format(
+                before=f"{score_before:.4f}",
+                after=f"{score_after:.4f}",
+                outcome='accepted' if accepted else 'rejected',
+                diff=diff_text[:500],
+                error=new_result.error or 'None'
+            )
+            
+            reflection_text = self._call_llm(reflect_prompt)
+            
+            if reflection_text:
+                try:
+                    if reflection_text.startswith('```json'):
+                        reflection_text = reflection_text[7:-3]
+                    reflection = json.loads(reflection_text.strip())
+                except Exception:
+                    reflection = {
+                        'result': 'success' if accepted else 'failure',
+                        'reason': reflection_text[:200],
+                        'next_strategy': 'Continue with similar improvements' if accepted else 'Try different approach'
+                    }
+                
+                reflection['timestamp'] = timestamp
+                self._append_reflection(reflection)
+        else:
+            print("[Mr. F] Skipping reflection (disabled in config)")
         
         # Update failures if rejected
         if not accepted and new_result.error:

@@ -7,6 +7,8 @@
   "temperature": 0.2,
   "max_tokens": 4096,
   "max_lines_changed": 100,
+  "use_critic": false,
+  "use_reflection": false,
   "timeout_seconds": 5,
   "max_file_size_multiplier": 2.0,
   "acceptance_threshold": 0.0,
