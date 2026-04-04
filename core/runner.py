@@ -682,24 +682,28 @@ class EvolutionRunner:
         master_prompt = self._load_prompt('master')
         
         if master_prompt:
-            improve_prompt = master_prompt.format(
+            try:
+                improve_prompt = master_prompt.format(
+                    goal=self.config.get('goal', 'Optimize code'),
+                    score=f"{score_before:.4f}",
+                    best_score=f"{baseline_score:.4f}",
+                    memory_context=memory_context,
+                    reflection_context=reflection_context,
+                    success_patterns='\n'.join(f"- {p}" for p in success_patterns) if success_patterns else "No specific success patterns yet",
+                    failure_patterns='\n'.join(f"- {p}" for p in failure_patterns) if failure_patterns else "No specific failure patterns yet",
+                    current_code=current_code
+                )
+            except KeyError:
+                # Fallback to simple formatting if master prompt has unexpected keys
+                improve_prompt = master_prompt + "\n\n" + current_code
+        else:
+            # Fallback to original improve prompt
+            improve_prompt_template = self._load_prompt('improve')
+            improve_prompt = improve_prompt_template.format(
                 goal=self.config.get('goal', 'Optimize code'),
                 score=f"{score_before:.4f}",
                 best_score=f"{baseline_score:.4f}",
                 memory_context=memory_context,
-                reflection_context=reflection_context,
-                success_patterns='\n'.join(f"- {p}" for p in success_patterns) if success_patterns else "No specific success patterns yet",
-                failure_patterns='\n'.join(f"- {p}" for p in failure_patterns) if failure_patterns else "No specific failure patterns yet",
-                current_code=current_code
-            )
-        else:
-            # Fallback to original improve prompt
-            improve_prompt = self._load_prompt('improve')
-            improve_prompt = improve_prompt.format(
-                goal=self.config.get('goal', 'Optimize code'),
-                score=f"{score_before:.4f}",
-                best_score=f"{baseline_score:.4f}",
-                summaries=memory_context,
                 failures=json.dumps(memory['failures']) if memory['failures'] else 'No failures recorded',
                 reflections=reflection_context,
                 current_code=current_code

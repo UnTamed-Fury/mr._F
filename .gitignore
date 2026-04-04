@@ -57,13 +57,7 @@ Thumbs.db
 
 # Mr. F specific - DO NOT COMMIT
 # These are generated at runtime and should not be tracked
-memory/journal.jsonl
-memory/reflections.jsonl
-memory/summaries.json
-memory/failures.json
-memory/best.json
-memory/iteration_state.json
-memory/self_assessments.jsonl
+# runs/ and meta/ states
 runs/latest/*
 runs/archive/*
 runs/trace/*
@@ -71,12 +65,14 @@ meta/compression_state.json
 workspace/__pycache__/
 core/__pycache__/
 
-# Keep these (they are initialized empty but tracked)
+# Memory files - Keep these (they are initialized but tracked)
 !memory/journal.jsonl
 !memory/reflections.jsonl
 !memory/summaries.json
 !memory/failures.json
 !memory/best.json
+!memory/iteration_state.json
+!memory/self_assessments.jsonl
 
 # Secrets - NEVER COMMIT
 *.pem

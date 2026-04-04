@@ -57,28 +57,26 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
       
-      - name: Commit and push if improved
-        if: steps.git-check.outputs.has_changes == 'true' && steps.evolve.outputs.exit_code == '0'
+      - name: Commit and push changes
+        if: steps.git-check.outputs.has_changes == 'true'
         run: |
           cd ${{ github.workspace }}
           git add -A
-          git commit -m "[Mr. F] Auto-evolve: Code improvement attempt
+          git commit -m "[Mr. F] Auto-evolve: Update (Run ${{ github.run_number }})
           
           Model: GPT-5.2 | Mode: Normal
-          Run: ${{ github.run_number }}
           
           Changes:
-          - Updated workspace code
-          - Updated memory files
-          - Updated run artifacts"
+          - Updated workspace/memory/artifacts"
           git push
       
       - name: Archive run (every 100 runs)
-        if: ${{ github.run_number % 100 == 0 }}
         run: |
-          cd ${{ github.workspace }}
-          mkdir -p runs/archive/run-${{ github.run_number }}
-          cp -r runs/latest/* runs/archive/run-${{ github.run_number }}/ || true
+          if [ $(( ${{ github.run_number }} % 100 )) -eq 0 ]; then
+            cd ${{ github.workspace }}
+            mkdir -p runs/archive/run-${{ github.run_number }}
+            cp -r runs/latest/* runs/archive/run-${{ github.run_number }}/ || true
+          fi
       
       - name: Upload run artifacts
         uses: actions/upload-artifact@v4
