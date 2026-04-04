@@ -354,73 +354,86 @@ class EvolutionRunner:
             'max_tokens': self.config.get('max_tokens', 2000)
         }
 
-        try:
-            data = json.dumps(payload).encode('utf-8')
-            req = urllib.request.Request(
-                f'{self.api_base}/chat/completions',
-                data=data,
-                headers=headers,
-                method='POST'
-            )
+        # Retry logic for rate limits
+        max_retries = 3
+        retry_delay = 5
+        
+        for attempt in range(max_retries):
+            try:
+                data = json.dumps(payload).encode('utf-8')
+                req = urllib.request.Request(
+                    f'{self.api_base}/chat/completions',
+                    data=data,
+                    headers=headers,
+                    method='POST'
+                )
 
-            with urllib.request.urlopen(req, timeout=90) as response:
-                response_data = response.read().decode('utf-8')
-                result = json.loads(response_data)
-                
-                if not result or 'choices' not in result:
-                    print(f"[Mr. F] LLM response format unexpected: {response_data[:200]}")
-                    return None
-                
-                choices = result.get('choices', [])
-                if not choices or len(choices) == 0:
-                    print("[Mr. F] LLM returned no choices")
-                    return None
-                
-                message = choices[0].get('message', {})
-                if not message:
-                    print("[Mr. F] LLM returned empty message")
-                    return None
+                with urllib.request.urlopen(req, timeout=90) as response:
+                    response_data = response.read().decode('utf-8')
+                    result = json.loads(response_data)
                     
-                content = message.get('content', '')
-                
-                # Check for reasoning models
-                if not content:
-                    reasoning = message.get('reasoning', '')
-                    if reasoning:
-                        print("[Mr. F] Model returned reasoning, extracting code...")
-                        code = self._extract_code_from_reasoning(reasoning)
-                        if code:
-                            content = code
-                
-                if not content:
-                    print("[Mr. F] LLM returned empty content")
-                    return None
-                
-                # Extract code from response
-                if '```python' in content:
-                    start = content.find('```python') + len('```python')
-                    end = content.find('```', start)
-                    code = content[start:end].strip()
-                elif '```' in content:
-                    start = content.find('```') + 3
-                    end = content.find('```', start)
-                    code = content[start:end].strip()
-                else:
-                    code = content.strip()
-                
-                # Merge with original to preserve structure
-                merged = self._merge_changes(code)
-                return merged
-                
-        except urllib.error.HTTPError as e:
-            print(f"[Mr. F] HTTP Error: {e.code} - {e.reason}")
-            return None
-        except urllib.error.URLError as e:
-            print(f"[Mr. F] URL Error: {e.reason}")
-            return None
-        except Exception as e:
-            print(f"[Mr. F] LLM call failed: {e}")
-            return None
+                    if not result or 'choices' not in result:
+                        print(f"[Mr. F] LLM response format unexpected: {response_data[:200]}")
+                        return None
+                    
+                    choices = result.get('choices', [])
+                    if not choices or len(choices) == 0:
+                        print("[Mr. F] LLM returned no choices")
+                        return None
+                    
+                    message = choices[0].get('message', {})
+                    if not message:
+                        print("[Mr. F] LLM returned empty message")
+                        return None
+                        
+                    content = message.get('content', '')
+                    
+                    # Check for reasoning models
+                    if not content:
+                        reasoning = message.get('reasoning', '')
+                        if reasoning:
+                            print("[Mr. F] Model returned reasoning, extracting code...")
+                            code = self._extract_code_from_reasoning(reasoning)
+                            if code:
+                                content = code
+                    
+                    if not content:
+                        print("[Mr. F] LLM returned empty content")
+                        return None
+                    
+                    # Extract code from response
+                    if '```python' in content:
+                        start = content.find('```python') + len('```python')
+                        end = content.find('```', start)
+                        code = content[start:end].strip()
+                    elif '```' in content:
+                        start = content.find('```') + 3
+                        end = content.find('```', start)
+                        code = content[start:end].strip()
+                    else:
+                        code = content.strip()
+                    
+                    # Merge with original to preserve structure
+                    merged = self._merge_changes(code)
+                    return merged
+                    
+            except urllib.error.HTTPError as e:
+                if e.code == 429:
+                    print(f"[Mr. F] Rate limit hit (429). Retrying in {retry_delay}s... (Attempt {attempt + 1}/{max_retries})")
+                    time.sleep(retry_delay)
+                    retry_delay *= 2  # Exponential backoff
+                    continue
+                print(f"[Mr. F] HTTP Error: {e.code} - {e.reason}")
+                return None
+            except urllib.error.URLError as e:
+                print(f"[Mr. F] URL Error: {e.reason}")
+                return None
+            except Exception as e:
+                print(f"[Mr. F] LLM call failed: {e}")
+                return None
+        
+        print("[Mr. F] Max retries reached for LLM call.")
+        return None
     
     def _merge_changes(self, new_code):
         """Merge LLM changes with original code to preserve structure."""
