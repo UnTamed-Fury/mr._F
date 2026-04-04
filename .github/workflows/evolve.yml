@@ -58,7 +58,7 @@ jobs:
           fi
       
       - name: Commit and push changes
-        if: steps.git-check.outputs.has_changes == 'true'
+        if: always() && steps.git-check.outputs.has_changes == 'true'
         run: |
           cd ${{ github.workspace }}
           git add -A
