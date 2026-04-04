@@ -21,6 +21,7 @@ import difflib
 import datetime
 import tempfile
 import shutil
+import time
 
 # Add core to path
 sys.path.insert(0, os.path.dirname(__file__))
