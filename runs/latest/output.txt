@@ -16,11 +16,10 @@ def fibonacci(n: int) -> int:
     Calculate the nth Fibonacci number.
 
     Args:
-        n: The position in the Fibonacci sequence (0-indexed). For n <= 0, returns 0.
+        n (int): The position in the Fibonacci sequence (0-indexed). For n <= 0, returns 0.
 
     Returns:
-        The nth Fibonacci number. For n=0 returns 0, n=1 returns 1.
+        int: The nth Fibonacci number. For n=0 returns 0, n=1 returns 1.
 
     Examples:
-        >>> fibonacci(0)
-     
+        >>> fibonac
