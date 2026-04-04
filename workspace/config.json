@@ -4,6 +4,7 @@
   "mutation_style": "precise",
   "allow_refactor": true,
   "model": "qwen/qwen3-coder:free",
+  "fallback_model": "meta-llama/llama-3.3-70b-instruct:free",
   "temperature": 0.2,
   "max_tokens": 4096,
   "max_lines_changed": 100,
