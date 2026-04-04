@@ -1,9 +1,9 @@
 {
   "status": "accepted",
-  "score": 0.9995833841990683,
-  "score_before": 0.9444968298598175,
-  "score_delta": 0.055086554339250804,
-  "runtime": 2.1696090698242188e-05,
-  "lines_changed": 32,
+  "score": 0.9950988625114531,
+  "score_before": 0.9383063419673914,
+  "score_delta": 0.0567925205440617,
+  "runtime": 0.003002643585205078,
+  "lines_changed": 5,
   "errors": null
 }

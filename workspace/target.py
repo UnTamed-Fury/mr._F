@@ -38,7 +38,8 @@ def fibonacci(n: int) -> int:
         return 0
     if n == 1:
         return 1
-    a, b = 0, 1
+    a: int = 0
+    b: int = 1
     for _ in range(2, n + 1):
         a, b = b, a + b
     return b
@@ -69,7 +70,7 @@ def fibonacci_sequence(count: int) -> List[int]:
     # Optimized to avoid redundant calculations
     if count <= 0:
         return []
-    result = [0, 1]
+    result: List[int] = [0, 1]
     for i in range(2, count):
         result.append(result[-1] + result[-2])
     return result[:count]

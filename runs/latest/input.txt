@@ -3,7 +3,7 @@ You are Mr. F, improving a Python codebase.
 ## Context
 
 **Goal:** Add type hints and improve docstrings for better code quality score
-**Current Score:** 0.9445
+**Current Score:** 0.9383
 **Best Score:** 1.0000
 
 ## CRITICAL Constraints (VIOLATION = REJECTION)
