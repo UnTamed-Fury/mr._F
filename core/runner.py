@@ -350,8 +350,8 @@ class EvolutionRunner:
         payload = {
             'model': self.model,
             'messages': messages,
-            'temperature': self.config.get('temperature', 0.7),
-            'max_tokens': 2000
+            'temperature': self.config.get('temperature', 0.5),
+            'max_tokens': self.config.get('max_tokens', 2000)
         }
 
         try:
@@ -364,10 +364,11 @@ class EvolutionRunner:
             )
 
             with urllib.request.urlopen(req, timeout=90) as response:
-                result = json.loads(response.read().decode('utf-8'))
+                response_data = response.read().decode('utf-8')
+                result = json.loads(response_data)
                 
                 if not result or 'choices' not in result:
-                    print(f"[Mr. F] LLM response format unexpected")
+                    print(f"[Mr. F] LLM response format unexpected: {response_data[:200]}")
                     return None
                 
                 choices = result.get('choices', [])
